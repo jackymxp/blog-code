@@ -1,29 +1,20 @@
 #ifndef SHELLSORT_HPP
 #define SHELLSORT_HPP
 
-
-#include "ISort.hpp"
-#include <iostream>
-
-using namespace std;
-
 template<typename T>
-class ShellSort : public ISort<T> {
+class ShellSort {
 
 public:
     void sortIterative(T *arr, const int len) {
         shellSortIterative(arr, len);
-        // assert(isSorted(arr, len));
     }
 
     void sortRecursive(T *arr, const int len) {
         shellSortRecursive(arr, len);
-        // assert(isSorted(arr, len));
     }
 
     void sortAdvanced(T *arr, const int len) {
         shellSortAdvanced(arr, len);
-        // assert(isSorted(arr, len));
     }
 
 public:

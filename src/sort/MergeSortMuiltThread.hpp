@@ -1,7 +1,6 @@
 #ifndef MERGESORTMUILTSORT_HPP
 #define MERGESORTMUILTSORT_HPP
 
-#include "ISort.hpp"
 #include <vector>
 #include <thread>
 #include <queue>
@@ -10,7 +9,7 @@
 using namespace std;
 
 template<typename T>
-class MergeSortMuiltThread : public ISort<T> {
+class MergeSortMuiltThread {
 
 public:
 
@@ -28,7 +27,6 @@ public:
 
 public:
     int threadNum = 8;
-
 
     void muiltThreadMergeSortSingleThreadMerge(T *arr, const int len) {
         auto table = initTable(arr, len);
@@ -155,9 +153,7 @@ public:
     }
 
 private:
-    MergeSort<T> *mergeSort = new MergeSort<T>();
     void mergeSortSingleThread(T *arr, const int len) {
-        //mergeSort->mergeSort3Way(arr, len);
         std::sort(arr, arr+len);
     }
 

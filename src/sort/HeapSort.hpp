@@ -1,10 +1,8 @@
 #ifndef HEAPSORT_HPP
 #define HEAPSORT_HPP
 
-#include "ISort.hpp"
-
 template<typename T>
-class HeapSort : public ISort<T> {
+class HeapSort {
 public:
     void sortIterative(T *arr, const int len) {
         heapSortIterative(arr, len);

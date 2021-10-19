@@ -1,13 +1,10 @@
 #ifndef MERGESORT_HPP
 #define MERGESORT_HPP
 
-
-#include "ISort.hpp"
-
 using namespace std;
 
 template<typename T>
-class MergeSort : public ISort<T> {
+class MergeSort{
 public:
     void sortIterative(T *arr, const int len) {
         mergeSortIterative(arr, len);

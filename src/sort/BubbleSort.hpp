@@ -1,10 +1,8 @@
 #ifndef BUBBLESORT_HPP
 #define BUBBLESORT_HPP
 
-#include "ISort.hpp"
-
 template<typename T>
-class BubbleSort : public ISort<T> {
+class BubbleSort {
 public:
     void sortIterative(T *arr, const int len) {
         bubbleSortIterative(arr, len);

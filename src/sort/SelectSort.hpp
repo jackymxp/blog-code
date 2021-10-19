@@ -1,10 +1,9 @@
 #ifndef SELECTSORT_HPP
 #define SELECTSORT_HPP
 
-#include "ISort.hpp"
 
 template<typename T>
-class SelectSort : public ISort<T> {
+class SelectSort {
 public:
     void sortIterative(T *arr, const int len) {
         selectSortIterative(arr, len);
@@ -21,17 +20,14 @@ public:
 public:
     void selectSortIterative(T *arr, const int len) {
         selectSortIterative(arr, 0, len - 1);
-        // assert(isSorted(arr, len));
     }
 
     void selectSortRecursive(T *arr, const int len) {
         selectSortRecursive(arr, 0, len - 1);
-        // assert(isSorted(arr, len));
     }
 
     void selectSortAdvanced(T *arr, const int len) {
         selectSortAdvanced(arr, 0, len - 1);
-        // assert(isSorted(arr, len));
     }
 
 

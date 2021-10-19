@@ -6,10 +6,9 @@
 #define QUICKSORT_HPP
 
 
-#include "ISort.hpp"
 
 template<typename T>
-class QuickSort : public ISort<T> {
+class QuickSort {
 
 public:
     void sortIterative(T *arr, const int len) {
@@ -73,7 +72,6 @@ public:
                 stack[++top] = hi;
             }
         }
-
     }
 
 
@@ -171,12 +169,9 @@ public:
     }
 
 
-
-
     void insertSortAdvanced(T *arr, const int lo, const int hi) {
         for (int i = lo + 1; i <= hi; i++) {
             insertOperationAdvance(arr, i);
-            // assert(isSorted(arr, lo, i));
         }
     }
 

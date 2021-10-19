@@ -1,39 +1,33 @@
 #ifndef INSERTSORT_HPP
 #define INSERTSORT_HPP
 
-#include "ISort.hpp"
 
 template<typename T>
-class InsertSort : public ISort<T> {
+class InsertSort {
 public:
     void sortIterative(T *arr, const int len) {
         insertSortIterative(arr, len);
     }
 
     void sortRecursive(T *arr, const int len) {
-        //insertionSortRecursive(arr, len);
-        binaryInsertSort(arr, len);
+        insertSortAdvanced(arr, len);
     }
 
     void sortAdvanced(T *arr, const int len) {
-        insertSortAdvanced(arr, len);
         binaryInsertSort(arr, len);
     }
 
 public:
     void insertSortIterative(T *arr, const int len) {
         insertSortIterative(arr, 0, len - 1);
-        // assert(isSorted(arr, len));
     }
 
     void insertionSortRecursive(T *arr, const int len) {
         insertionSortRecursive(arr, 0, len - 1);
-        // assert(isSorted(arr, len));
     }
 
     void insertSortAdvanced(T *arr, const int len) {
         insertSortAdvanced(arr, 0, len - 1);
-        // assert(isSorted(arr, len));
     }
 
 private:
@@ -41,8 +35,7 @@ private:
     void insertSortIterative(T *arr, const int lo, const int hi) {
         //arr[lo...i)有序，第一个元素arr[lo]自己不用排
         for (int i = lo + 1; i <= hi; i++) {
-            insertOperation(arr, i);
-            // assert(isSorted(arr, lo, i));
+            insertOperationAdvance(arr, i);
         }
     }
 
@@ -61,7 +54,6 @@ private:
     void insertSortAdvanced(T *arr, const int lo, const int hi) {
         for (int i = lo + 1; i <= hi; i++) {
             insertOperationAdvance(arr, i);
-            // assert(isSorted(arr, lo, i));
         }
     }
 
@@ -83,21 +75,22 @@ private:
 
     //nums[0...len)有序，在其中搜索插入位置，使用二分法
     int searchInsertPos(T *nums, const int len, T target) {
-        int left = 0;
-        // 因为有可能数组的最后一个元素的位置的下一个是我们要找的，故右边界是 len
-        int right = len;
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            // 小于 target 的元素一定不是解
-            if (nums[mid] < target) {
-                // 下一轮搜索的区间是 [mid + 1, right]
-                left = mid + 1;
-            } else {
-                // 下一轮搜索的区间是 [left, mid]
-                right = mid;
-            }
-        }
-        return left;
+        // int left = 0;
+        // // 因为有可能数组的最后一个元素的位置的下一个是我们要找的，故右边界是 len
+        // int right = len;
+        // while (left < right) {
+        //     int mid = left + (right - left) / 2;
+        //     // 小于 target 的元素一定不是解
+        //     if (nums[mid] < target) {
+        //         // 下一轮搜索的区间是 [mid + 1, right]
+        //         left = mid + 1;
+        //     } else {
+        //         // 下一轮搜索的区间是 [left, mid]
+        //         right = mid;
+        //     }
+        // }
+        // return left;
+        return lower_bound(nums, nums+len, target) - nums;
     }
 
     void binaryInsertSort(T *arr, const int len) {
