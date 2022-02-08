@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <thread>
 
 class quick_find {
 public:
@@ -259,11 +260,23 @@ int main() {
 
     int size = 10000000;
 
-    std::cout << "weight_quick_union " << test_union_find(weight_quick_union(size), size) << std::endl;
+    std::thread wqc([=](){
+        std::cout << "weight_quick_union " << test_union_find(weight_quick_union(size), size) << std::endl;
+    });
 
-   // cout << "rank_quick_union " << test_union_find(rank_quick_union(size), size) << endl;
+    std::thread pcq([=]() {
+        std::cout << "path_compress_quick_union " << test_union_find(path_compress_quick_union(size), size) << std::endl;
+    });
 
-    std::cout << "path_compress_quick_union " << test_union_find(path_compress_quick_union(size), size) << std::endl;
+    std::thread rqu([=]() {
+        std::cout << "rank_quick_union " << test_union_find(rank_quick_union(size), size) << std::endl;
 
+    });
+
+    
+    wqc.join();
+    pcq.join();
+    rqu.join();
+    
     return 0;
 }

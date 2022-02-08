@@ -199,7 +199,7 @@ namespace test_thread_quick_sort {
 } // test_thread_quick_sort
 
 int main(void) {
-    const int num = 10;
+    const int num = 1000;
     const int len = 10000 * num;
     int *arr;
     //arr = generateRandomArray<int>(len, 0, len);
@@ -212,7 +212,17 @@ int main(void) {
         //test_sort("归并排序", MergeSort<int>(), arr, len);
         //test_sort("多线程快速排序", QuickSortMuiltThread<int>(), arr, len);
         
-        auto t = test_sort_function("插入排序 改进: ", arr, len, bind(&InsertSort<int>::sortAdvanced, InsertSort<int>(), std::placeholders::_1, std::placeholders::_2));
+        // auto t = test_sort_function("插入排序 改进: ", arr, len, bind(&InsertSort<int>::sortAdvanced, InsertSort<int>(), std::placeholders::_1, std::placeholders::_2));
+
+        std::thread qt([=](){test_sort("快速排序", QuickSort<int>(), arr, len);});
+        std::thread ht([=](){test_sort("堆排序", HeapSort<int>(), arr, len);});
+        std::thread mt([=](){test_sort("归并排序", MergeSort<int>(), arr, len);});
+        std::thread mqt([=](){test_sort("多线程快速排序", QuickSortMuiltThread<int>(), arr, len);});
+
+        qt.join();
+        ht.join();
+        mt.join();
+        mqt.join();
         delete[] arr;
     }
     return 0;

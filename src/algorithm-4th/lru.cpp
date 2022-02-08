@@ -2,25 +2,51 @@
 #include <unordered_map>
 #include <vector>
 #include <mutex>
+#include <iostream>
 
 namespace cache {
     template<typename K, typename V>
     class LRUCache {
     public:
-        typedef typename std::pair<K, V> Node;
-        typedef typename std::list<Node>::iterator list_iterator;
+        typedef typename std::pair<K, V> value_type;
+        typedef typename std::list<value_type>::iterator iterator;
 
-        explicit LRUCache(size_t capacity) : capacity(capacity) {}
+        typedef K key_type;
+        typedef const key_type &const_key_reference;
+
+        typedef V val_type;
+        typedef val_type &val_reference;
+        typedef const val_type &const_val_reference;
 
 
-        void put(const K &key, const V &value) {
+        iterator begin() noexcept {
+            return node_list.begin();
+        }
+
+        iterator end() noexcept {
+            return node_list.end();
+        }
+
+        explicit LRUCache(size_t capacity = 16) : capacity(capacity) {}
+
+        val_reference operator[](const_key_reference key) {
+            if (!exists(key))
+                put(key, {});
+            return *get(key);
+        }
+
+        key_type operator[](const_key_reference key) const {
+            return *get(key);
+        }
+
+        void put(const_key_reference key, const_val_reference value) {
             std::lock_guard<std::mutex> guard(mtx);
             auto it = node_map.find(key);
             if (it != node_map.end()) {
                 node_list.erase(it->second);
                 node_map.erase(it);
             }
-            node_list.push_front(std::move(Node(key, value)));
+            node_list.push_front(std::move(value_type(key, value)));
             node_map[key] = node_list.begin();
 
             if (node_map.size() > capacity) {
@@ -31,7 +57,7 @@ namespace cache {
             }
         }
 
-        const V *get(const K &key) {
+        V *get(const K &key) {
             std::lock_guard<std::mutex> guard(mtx);
             auto it = node_map.find(key);
             if (it == node_map.end()) {
@@ -50,7 +76,7 @@ namespace cache {
         std::vector<K> keys() const {
             std::vector<K> ks;
             for (const auto &node : node_list)
-                ks.emplace_back(node.first);
+                ks.push_back(node.first);
             return ks;
         }
 
@@ -59,13 +85,13 @@ namespace cache {
         }
 
     private:
-        std::list<Node> node_list;
-        std::unordered_map<K, list_iterator> node_map;
+        std::list<value_type> node_list;
+        std::unordered_map<K, iterator> node_map;
         size_t capacity;
         std::mutex mtx;
     };
 
-}
+} // namespace cache
 
 
 #include <string>
@@ -74,23 +100,15 @@ namespace cache {
 int main(void) {
     using string = std::string;
 
-    cache::LRUCache<string, int> lru(2);
+    cache::LRUCache<string, int> lru(3);
 
-    lru.put("a", 1);
-    lru.put("b", 1);
-    std::cout << "fdsaf" << std::endl;
-    auto a = lru.get("a");
-    std::cout << *a << std::endl;
-    auto b = lru.get("b");
-    std::cout << *b << " " << b << std::endl;
-    auto d = lru.get("d");
-    std::cout << d << std::endl;
+    lru["a"] = 1;
+    lru["b"] = 2;
+    lru["c"] = 3;
 
-    auto ks = lru.keys();
-    std::cout << "keys " << std::endl;
-    for (const auto &k : ks)
-        std::cout << k << std::endl;
+    auto d = lru["d"];
 
-    a = lru.get("a");
-    std::cout << *a << std::endl;
+    for (auto p : lru) {
+        std::cout << p.first << " " << p.second << std::endl;
+    }
 }
